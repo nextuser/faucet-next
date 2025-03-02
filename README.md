@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Faucet RPC Service
+A website for requesting testnet faucet funds.
+- Supports GitHub login and provides 1 SUI on testnet per GitHub account daily
+- Provides 1 SUI on testnet daily for accounts holding at least 0.1 SUI on mainnet
 
-## Getting Started
+## Prerequisites
 
-First, run the development server:
+- Node.js >= 20.0.0
+- pnpm >= 9.12.3 (`npm install -g pnpm`)
+
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone <repository-url>
+
+# Install dependencies
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Run in development mode
+pnpm dev
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Build the project
+pnpm build
 
-## Learn More
+# Start the production server
+pnpm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Quick Start
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. Install pnpm if you haven't already:
+```bash
+npm install -g pnpm
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. Install dependencies:
+```bash
+pnpm install
+```
 
-## Deploy on Vercel
+### 3. Create a `.env` file:
+You need to register a GitHub OAuth application at [github.com/settings/developers](https://github.com/settings/developers)
+The mnemonic is used to generate the private key for the faucet account.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Configure the clientId in site_config.ts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### 3.1 File: .env
+```bash
+export MNEMONIC=<your mnemonic here>
+export clientId=<your client id from github oauth site>
+export clientSecret=<your client secret from github oauth site>
+```
+
+#### 3.2 Before debugging:
+```bash
+source .env
+```
+### 4 debug on localhost:
+#### 4.1 change GithubPage.tsx
+```ts
+import {github_config_faucet as config} from './site_config'
+```
+to
+```ts
+import {github_config_local as config}from './site_config'
+```
+
+#### 4.2 Run local server
+```bash
+pnpm devp
+```
+
+#### 4.3 Access in web browser
+Visit 'http://localhost:6789'
+
+### 5. Deploy to Vercel
+#### 5.1 Enable redirect to `https://wwww.faucet.mov`
+Modify GithubPage.tsx:
+```ts
+import {github_config_faucet as config} from './site_config'
+```
+
+#### 5.2 Upload
+```bash
+pnpm upload
+```
+
+#### 5.3 Test
+Access `https://wwww.faucet.mov` in your browser
+
+### 6. GitHub OAuth Process Flow
+- For GitHub authentication token details, see: [oauth](./github-oauth.md)
+
+
+
+
+

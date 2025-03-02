@@ -1,16 +1,23 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import nextPlugin from '@next/eslint-plugin-next';
+import js from '@eslint/js';
+import { FlatCompat } from '@eslint/eslintrc';
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+export default [
+  js.configs.recommended,
+  ...compat.extends('next/core-web-vitals'),
+  ...compat.extends('prettier'), // 添加 Prettier，关闭与格式化冲突的规则
+  {
+    plugins: {
+      '@next/next': nextPlugin,
+    },
+    rules: {
+      'no-unused-vars': 'error',
+      'no-console': 'error',
+      '@next/next/no-img-element': 'error',
+    },
+  },
 ];
-
-export default eslintConfig;
